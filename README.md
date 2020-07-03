@@ -50,7 +50,7 @@ INSERT INTO users (login, password)
 SELECT * FROM users;
 ```
 
-**General pattern for creating Tables: **
+**General pattern for creating Tables:**
 ```
 # Pattern
 CREATE TABLE table_name (
