@@ -17,6 +17,11 @@ CREATE DATABASE test_database;
 CREATE USER test_user WITH password 'qwerty';
 GRANT ALL ON DATABASE test_database TO test_user;
 
+# (optional) Additional rights to user:
+ALTER ROLE test_user CREATEDB;
+# Or even
+ALTER ROLE test_user WITH SUPERUSER
+
 # Try to work with DB:
 psql -h localhost test_database test_user
 
@@ -63,10 +68,24 @@ CREATE TABLE playground (
     install_date date
 );
 
+# All databases
+\l
+# All tables in database:
+\dt
+
+# Connection ifo (DB and USer name):
+\conninfo
+#To connect to Database fith username:
+psql DBNAME USERNAME
 # For info:
 \d
 # For info (without sequence):
 \dt
+# Add constraint to existing column: 
+alter table customers alter column nickname_telegram set not NULL
+# Get existing constraints: 
+\d+ table_name
+
 ```
 
 ## 2. Remote connection to Database
@@ -96,6 +115,6 @@ host    all             all              ::/0                            md5
 
 Source: 
 
-[1] https://eax.me/postgresql-install/
+[1] Create DB: https://eax.me/postgresql-install/
 
-[2] https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04-ru
+[2] Useful commands: https://metanit.com/sql/postgresql/2.6.php
