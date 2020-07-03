@@ -108,7 +108,7 @@ ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFEREN
 # if you want to enable on delete cascade:
 # explanantion if you need cascade delete: https://stackoverflow.com/questions/278392/should-i-use-the-cascade-delete-rule
 ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id) on delete cascade;
-# In order to have foreign_key but not to enable cascade delete
+# In order to have foreign_key but in case we delete from main table then in dependent value will set to null:
 ALTER TABLE transactions ADD CONSTRAINT fk_transactions_to FOREIGN KEY (customer_id_to) REFERENCES customers (id) on delete set null;
 
 # Remove Foreign key:
