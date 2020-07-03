@@ -111,6 +111,8 @@ ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFEREN
 # In order to have foreign_key but in case we delete from main table then in dependent value will set to null:
 ALTER TABLE transactions ADD CONSTRAINT fk_transactions_to FOREIGN KEY (customer_id_to) REFERENCES customers (id) on delete set null;
 
+# source of all possible actions while delete https://metanit.com/sql/mysql/2.5.php
+
 # Remove Foreign key:
 alter table table_name drop constraint name_of_foreign_key
 
