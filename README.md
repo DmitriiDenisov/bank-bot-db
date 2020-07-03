@@ -50,7 +50,7 @@ INSERT INTO users (login, password)
 SELECT * FROM users;
 ```
 
-General pattern for creating Tables: 
+**General pattern for creating Tables: **
 ```
 # Pattern
 CREATE TABLE table_name (
@@ -67,7 +67,10 @@ CREATE TABLE playground (
     location varchar(25) check (location in ('north', 'south', 'west', 'east', 'northeast', 'southeast', 'southwest', 'northwest')),
     install_date date
 );
+```
 
+**Useful tips**:
+```
 # All databases
 \l
 # All tables in database:
@@ -92,6 +95,8 @@ alter table balances add constraint unique_cust_id UNIQUE (customer_id);
 DETAIL:  Key (id)=(1) is still referenced from table "balances".):
 ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id);
 ```
+
+
 
 ## 2. Remote connection to Database
 
