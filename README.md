@@ -81,11 +81,16 @@ psql DBNAME USERNAME
 \d
 # For info (without sequence):
 \dt
-# Add constraint to existing column: 
+# Add constraint to existing column not null: 
 alter table customers alter column nickname_telegram set not NULL
+# Add constraint to existing column unique values
+alter table balances add constraint unique_cust_id UNIQUE (customer_id);
 # Get existing constraints: 
 \d+ table_name
 
+# Add foreign Key (once you try to delete from main table you will observe error like ERROR:  update or delete on table "customers" violates foreign key constraint "fk_balances" on table "balances"
+DETAIL:  Key (id)=(1) is still referenced from table "balances".):
+ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id);
 ```
 
 ## 2. Remote connection to Database
