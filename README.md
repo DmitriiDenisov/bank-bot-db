@@ -92,6 +92,9 @@ psql DBNAME USERNAME
 # Add constraint to existing column not null: 
 alter table customers alter column nickname_telegram set not NULL
 
+# Remove constraint 
+alter table table_name alter column column_name drop not null;
+
 # Add constraint to existing column unique values
 alter table balances add constraint unique_cust_id UNIQUE (customer_id);
 
@@ -105,6 +108,8 @@ ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFEREN
 # if you want to enable on delete cascade:
 # explanantion if you need cascade delete: https://stackoverflow.com/questions/278392/should-i-use-the-cascade-delete-rule
 ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id) on delete cascade;
+# In order to have foreign_key but not to enable cascade delete
+ALTER TABLE transactions ADD CONSTRAINT fk_transactions_to FOREIGN KEY (customer_id_to) REFERENCES customers (id) on delete set null;
 
 # Remove Foreign key:
 alter table table_name drop constraint name_of_foreign_key
