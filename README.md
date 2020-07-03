@@ -88,7 +88,7 @@ host    all             all              ::/0                            md5
 7. In order to connect:
 
 <p align="center">
-  <img src="https://i.ibb.co/Ph7vCsJ/Screen-Shot-2020-07-03-at-12-48-07-PM.png" width="500" alt="accessibility text">
+  <img src="https://i.ibb.co/Ph7vCsJ/Screen-Shot-2020-07-03-at-12-48-07-PM.png" width="350" alt="accessibility text">
 </p>
 
 
