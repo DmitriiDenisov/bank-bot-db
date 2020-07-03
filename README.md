@@ -102,6 +102,12 @@ alter table balances add constraint unique_cust_id UNIQUE (customer_id);
 DETAIL:  Key (id)=(1) is still referenced from table "balances".):
 ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id);
 
+# if you want to enable on delete cascade:
+ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id) on delete cascade;
+
+# Remove Foreign key:
+alter table table_name drop constraint name_of_foreign_key
+
 # Get all Foreign keys for a given table:
 # 1. Create view:
 
@@ -109,7 +115,8 @@ CREATE VIEW foreign_keys_view AS
 SELECT
     tc.table_name, kcu.column_name,
     ccu.table_name AS foreign_table_name,
-    ccu.column_name AS foreign_column_name
+    ccu.column_name AS foreign_column_name,
+    tc.constraint_name
 FROM
     information_schema.table_constraints AS tc
     JOIN information_schema.key_column_usage
