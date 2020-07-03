@@ -1,4 +1,4 @@
-# bank-bot
+# bank-bot-db
 
 ## 1. Creating Database Postgres
 
