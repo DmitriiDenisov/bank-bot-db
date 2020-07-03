@@ -73,27 +73,57 @@ CREATE TABLE playground (
 ```
 # All databases
 \l
+
 # All tables in database:
 \dt
 
 # Connection ifo (DB and USer name):
 \conninfo
-#To connect to Database fith username:
+
+# To connect to Database fith username:
 psql DBNAME USERNAME
+
 # For info:
 \d
+
 # For info (without sequence):
 \dt
+
 # Add constraint to existing column not null: 
 alter table customers alter column nickname_telegram set not NULL
+
 # Add constraint to existing column unique values
 alter table balances add constraint unique_cust_id UNIQUE (customer_id);
+
 # Get existing constraints: 
 \d+ table_name
 
 # Add foreign Key (once you try to delete from main table you will observe error like ERROR:  update or delete on table "customers" violates foreign key constraint "fk_balances" on table "balances"
 DETAIL:  Key (id)=(1) is still referenced from table "balances".):
 ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id);
+
+# Get all Foreign keys for a given table:
+# 1. Create view:
+
+CREATE VIEW foreign_keys_view AS
+SELECT
+    tc.table_name, kcu.column_name,
+    ccu.table_name AS foreign_table_name,
+    ccu.column_name AS foreign_column_name
+FROM
+    information_schema.table_constraints AS tc
+    JOIN information_schema.key_column_usage
+        AS kcu ON tc.constraint_name = kcu.constraint_name
+    JOIN information_schema.constraint_column_usage
+        AS ccu ON ccu.constraint_name = tc.constraint_name
+WHERE constraint_type = 'FOREIGN KEY';
+
+# 2. Select from it:
+SELECT * FROM foreign_keys_view;
+
+# 3. Soruce:
+# Source: https://stackoverflow.com/questions/1152260/postgres-sql-to-list-table-foreign-keys
+
 ```
 
 
