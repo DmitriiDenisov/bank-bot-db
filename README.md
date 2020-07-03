@@ -194,6 +194,9 @@ a = cur.execute("SELECT * FROM customers;")
 print(cur.fetchone())
 ```
 
+## 4. Connect with SQLAlchemy in Python:
+
+
 Source: 
 
 [1] Create DB: https://eax.me/postgresql-install/
