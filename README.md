@@ -112,6 +112,32 @@ host    all             all              ::/0                            md5
   <img src="https://i.ibb.co/Ph7vCsJ/Screen-Shot-2020-07-03-at-12-48-07-PM.png" width="350" alt="accessibility text">
 </p>
 
+## 3. Connect from Python (in assumption that system is MacOs)
+
+1. `brew install postgresql`
+
+2. `pip install psycopg2`
+
+3. In case of error `gcc failed with exit mac` then `sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /`
+
+4. In case of warining `UserWarning: The psycopg2 wheel package will be renamed from release 2.8; in` => ` pip install psycopg2-binary `
+
+5. Check with psycopg2 that you have access to DB: 
+
+```
+import psycopg2
+
+
+conn = psycopg2.connect(host="34.72.212.249", database="test_db", user="user_name", password="pass")
+cur = conn.cursor()
+print('PostgreSQL database version:')
+cur.execute('SELECT version()')
+
+db_version = cur.fetchone()
+print(db_version)
+a = cur.execute("SELECT * FROM customers;")
+print(cur.fetchone())
+```
 
 Source: 
 
