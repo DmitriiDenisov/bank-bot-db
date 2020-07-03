@@ -103,6 +103,7 @@ DETAIL:  Key (id)=(1) is still referenced from table "balances".):
 ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id);
 
 # if you want to enable on delete cascade:
+# explanantion if you need cascade delete: https://stackoverflow.com/questions/278392/should-i-use-the-cascade-delete-rule
 ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id) on delete cascade;
 
 # Remove Foreign key:
