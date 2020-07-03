@@ -95,7 +95,7 @@ alter table customers alter column nickname_telegram set not NULL
 # Add constraint to existing column unique values
 alter table balances add constraint unique_cust_id UNIQUE (customer_id);
 
-# Get existing constraints: 
+# Get existing constraints and Foreign Keys: 
 \d+ table_name
 
 # Add foreign Key (once you try to delete from main table you will observe error like ERROR:  update or delete on table "customers" violates foreign key constraint "fk_balances" on table "balances"
