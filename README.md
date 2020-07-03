@@ -80,8 +80,10 @@ CREATE TABLE playground (
 4. `sudo vim postgresql.conf`, uncomment + change `listen_addresses='localhost'` to `listen_addresses = '0.0.0.0'`
 
 5. `sudo vim pg_hba.conf`, add following: 
+```
 host    all             all              0.0.0.0/0                       md5
 host    all             all              ::/0                            md5
+```
 
 6. `sudo service postgresql restart`
 
