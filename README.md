@@ -196,6 +196,11 @@ print(cur.fetchone())
 
 ## 4. Connect with SQLAlchemy in Python:
 
+1. `pip install SQLAlchemy`
+
+2. 
+
+# Ralationships are lazy, proof: https://stackoverflow.com/questions/53987267/sqlalchemy-disable-lazy-loading-and-load-object-only-on-join
 
 Source: 
 
