@@ -11,7 +11,8 @@ class Balance(Base):
 
     id = Column(Integer, primary_key=True)
     customer_id = Column(Integer, ForeignKey('customers.id'))
-    # customer = relationship("Customer", backref="balance", uselist=False)
+    # Relationship means that python object will have separate field which is connected to value from another table
+    # backref means that in Customer
     customer = relationship("Customer", backref=backref("bal", uselist=False))
     usd_bal = Column(Float)
     eur_bal = Column(Float)

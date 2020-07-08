@@ -31,16 +31,16 @@ for bal in all_bal:
 # .all() gets list of values. Without .all() it is generator
 customers_joined = session.query(Customer, Balance).join(Balance, Customer.id == Balance.customer_id).all()
 transactions = session.query(Customer, Transaction).join(Transaction, Customer.id == Transaction.customer_id_from).all()
-# If we have Foreign Keys:
+# If we have Foreign Keys we don't need to specify "join on":
 joined = session.query(Customer, Balance).join(Balance,
                                                isouter=True).all()  # isouter=True for LEFT not INNER. Same behavior for .outerjoin()
 joined2 = session.query(Balance, Customer).join(Customer).all()
-# In this case we have Foreign key, but they are two
+# In this case we two Foreign keys we still need to specify "join ON":
 joined3 = session.query(Customer, Transaction).join(Transaction, Customer.id == Transaction.customer_id_from).all()
 
 # Summary:
-# 1. ForeignKey is for making like this session.query(Balance).join(Customer).all()
-# 2. relationship is for making available parameters inside objects
+# 1. ForeignKey is useful because you don't need to specify ON: session.query(Balance).join(Customer).all()
+# 2. relationship is for making available parameters inside objects, for example all_cust[0].bal
 
 print('\n### All customers:')
 for customer, balance in customers_joined:
