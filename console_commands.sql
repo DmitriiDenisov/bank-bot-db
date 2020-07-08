@@ -1,5 +1,5 @@
 insert into balances (customer_id, usd_bal, eur_bal, aed_bal) values (1, -4, 120, 0)
-select * from balances
+select * from balances;
 
 
 ALTER TABLE balances ADD CONSTRAINT fk_balances FOREIGN KEY (customer_id) REFERENCES customers (id);
@@ -27,3 +27,5 @@ ALTER TABLE transactions ADD CONSTRAINT fk_transactions_from FOREIGN KEY (custom
 alter table transactions drop constraint fk_transactions_to_2;
 
 
+
+select * from foreign_keys_view;
