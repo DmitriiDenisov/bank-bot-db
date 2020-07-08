@@ -88,7 +88,7 @@ Once you try to delete from main table you will observe error like ERROR:
 
 **if you want to enable on delete cascade:**
 
-__Explanantion if you need cascade delete: [link](https://stackoverflow.com/questions/278392/should-i-use-the-cascade-delete-rule)__
+_Explanantion if you need cascade delete: [link](https://stackoverflow.com/questions/278392/should-i-use-the-cascade-delete-rule)_
 
 `ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id) on delete cascade;`
 
@@ -96,7 +96,7 @@ __Explanantion if you need cascade delete: [link](https://stackoverflow.com/ques
 
 `ALTER TABLE transactions ADD CONSTRAINT fk_transactions_to FOREIGN KEY (customer_id_to) REFERENCES customers (id) on delete set null;`
 
-__Source of all possible actions while delete [link](https://metanit.com/sql/mysql/2.5.php)__
+_Source of all possible actions while delete [link](https://metanit.com/sql/mysql/2.5.php)_
 
 **Remove Foreign key:**
 
@@ -126,7 +126,7 @@ WHERE constraint_type = 'FOREIGN KEY';
 
 `SELECT * FROM foreign_keys_view;`
 
-__Soruce: [link](https://stackoverflow.com/questions/1152260/postgres-sql-to-list-table-foreign-keys)__
+_Soruce: [link](https://stackoverflow.com/questions/1152260/postgres-sql-to-list-table-foreign-keys)_
 
 
 
