@@ -177,33 +177,22 @@ host    all             all              ::/0                            md5
 
 4. In case of warining `UserWarning: The psycopg2 wheel package will be renamed from release 2.8; in` => ` pip install psycopg2-binary `
 
-5. Check with psycopg2 that you have access to DB: 
-
-```
-import psycopg2
-
-
-conn = psycopg2.connect(host="34.72.212.249", database="test_db", user="user_name", password="pass")
-cur = conn.cursor()
-print('PostgreSQL database version:')
-cur.execute('SELECT version()')
-
-db_version = cur.fetchone()
-print(db_version)
-a = cur.execute("SELECT * FROM customers;")
-print(cur.fetchone())
-```
+5. Check with psycopg2 that you have access to DB: `connect_db_psycopg2.py`
 
 ## 4. Connect with SQLAlchemy in Python:
 
 1. `pip install SQLAlchemy`
 
-2. 
+2. In folder `models` are descriptions of all Tables
 
-# Ralationships are lazy, proof: https://stackoverflow.com/questions/53987267/sqlalchemy-disable-lazy-loading-and-load-object-only-on-join
+3. To run: `sqlalchemy_examples/queries.py` for queries, `sqlalchemy_examples/inserts.py` for insert examples and so on
 
-Source: 
+4. Majority of comments are in `queries.py` about Foreign Keys, relationships etc. Relationship means that python object will have separate field which is connected to value from another table. For example, object Customer will have separate field Balance which will be taken from Balance table, meanwhile it won't increase time consumption because it is lazy operation ([proof](https://stackoverflow.com/questions/53987267/sqlalchemy-disable-lazy-loading-and-load-object-only-on-join))
+
+Sources: 
 
 [1] Create DB: https://eax.me/postgresql-install/
 
 [2] Useful commands: https://metanit.com/sql/postgresql/2.6.php
+
+[3] SQLAlchemy: https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
