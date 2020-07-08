@@ -50,7 +50,7 @@ INSERT INTO users (login, password)
 SELECT * FROM users;
 ```
 
-**General pattern for creating Tables:**
+### 1.1 General pattern for creating Tables:
 ```
 # Pattern
 CREATE TABLE table_name (
@@ -69,56 +69,44 @@ CREATE TABLE playground (
 );
 ```
 
-**Useful tips**:
+### 1.2 Foreign keys:
+
+**Why do we need Foreign Key?**
+
+When you use foreign keys you get: Data integrity and faster queries. Consider you remove an users, then you would end up with a lot of comments linked to an invalid user if you forget to remove the comments manually with a separate query. With foreign keys you could set it to remove all the comments automatically as you remove an user (or update changes, like if you would change the user id). 
+Also you won't be able to add new row to Table if it does not have corresponding row in main table (for example, you won't be able to add new row to Balance while you don't have corresponding Customer)
+Once you try to delete from main table you will observe error like ERROR:  
+`update or delete on table "customers" violates foreign key constraint "fk_balances" on table "balances" DETAIL:  Key (id)=(1) is still referenced from table "balances".):`
+
+**Get existing constraints and Foreign Keys**: 
+
+`\d+ table_name`
+
+**Add Foreign Key to existing Table:**
+
+`ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id);`
+
+**if you want to enable on delete cascade:**
+
+__Explanantion if you need cascade delete: [link](https://stackoverflow.com/questions/278392/should-i-use-the-cascade-delete-rule)__
+
+`ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id) on delete cascade;`
+
+**In order to have foreign_key but in case we delete from main table then in dependent value will set to null:**
+
+`ALTER TABLE transactions ADD CONSTRAINT fk_transactions_to FOREIGN KEY (customer_id_to) REFERENCES customers (id) on delete set null;`
+
+__Source of all possible actions while delete [link](https://metanit.com/sql/mysql/2.5.php)__
+
+**Remove Foreign key:**
+
+`alter table table_name drop constraint name_of_foreign_key`
+
+**Get all Foreign keys for a given table:**
+
+1. Create view:
+
 ```
-# All databases
-\l
-
-# All tables in database:
-\dt
-
-# Connection ifo (DB and USer name):
-\conninfo
-
-# To connect to Database fith username:
-psql DBNAME USERNAME
-
-# For info:
-\d
-
-# For info (without sequence):
-\dt
-
-# Add constraint to existing column not null: 
-alter table customers alter column nickname_telegram set not NULL
-
-# Remove constraint 
-alter table table_name alter column column_name drop not null;
-
-# Add constraint to existing column unique values
-alter table balances add constraint unique_cust_id UNIQUE (customer_id);
-
-# Get existing constraints and Foreign Keys: 
-\d+ table_name
-
-# Add foreign Key (once you try to delete from main table you will observe error like ERROR:  update or delete on table "customers" violates foreign key constraint "fk_balances" on table "balances"
-DETAIL:  Key (id)=(1) is still referenced from table "balances".):
-ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id);
-
-# if you want to enable on delete cascade:
-# explanantion if you need cascade delete: https://stackoverflow.com/questions/278392/should-i-use-the-cascade-delete-rule
-ALTER TABLE orders ADD CONSTRAINT name_of_rule FOREIGN KEY (customer_id) REFERENCES customers (id) on delete cascade;
-# In order to have foreign_key but in case we delete from main table then in dependent value will set to null:
-ALTER TABLE transactions ADD CONSTRAINT fk_transactions_to FOREIGN KEY (customer_id_to) REFERENCES customers (id) on delete set null;
-
-# source of all possible actions while delete https://metanit.com/sql/mysql/2.5.php
-
-# Remove Foreign key:
-alter table table_name drop constraint name_of_foreign_key
-
-# Get all Foreign keys for a given table:
-# 1. Create view:
-
 CREATE VIEW foreign_keys_view AS
 SELECT
     tc.table_name, kcu.column_name,
@@ -132,13 +120,41 @@ FROM
     JOIN information_schema.constraint_column_usage
         AS ccu ON ccu.constraint_name = tc.constraint_name
 WHERE constraint_type = 'FOREIGN KEY';
+```
 
-# 2. Select from it:
-SELECT * FROM foreign_keys_view;
+2. Select from it:
 
-# 3. Soruce:
-# Source: https://stackoverflow.com/questions/1152260/postgres-sql-to-list-table-foreign-keys
+`SELECT * FROM foreign_keys_view;`
 
+__Soruce: [link](https://stackoverflow.com/questions/1152260/postgres-sql-to-list-table-foreign-keys)__
+
+
+
+### 1.3 Useful tips:
+```
+# To connect to Database fith username:
+psql DBNAME USERNAME
+
+# All databases
+\l
+
+# For info with sequences:
+\d
+
+# All tables in database (without sequence):
+\dt
+
+# Connection ifo (DB and USer name):
+\conninfo
+
+# Add constraint to existing column not null: 
+alter table customers alter column nickname_telegram set not NULL
+
+# Remove constraint 
+alter table table_name alter column column_name drop not null;
+
+# Add constraint to existing column unique values
+alter table balances add constraint unique_cust_id UNIQUE (customer_id);
 ```
 
 
@@ -189,7 +205,7 @@ host    all             all              ::/0                            md5
 
 4. Majority of comments are in `queries.py` about Foreign Keys, relationships etc. Relationship means that python object will have separate field which is connected to value from another table. For example, object Customer will have separate field Balance which will be taken from Balance table, meanwhile it won't increase time consumption because it is lazy operation ([proof](https://stackoverflow.com/questions/53987267/sqlalchemy-disable-lazy-loading-and-load-object-only-on-join))
 
-Sources: 
+## 5. Sources: 
 
 [1] Create DB: https://eax.me/postgresql-install/
 
