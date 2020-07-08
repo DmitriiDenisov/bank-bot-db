@@ -9,7 +9,7 @@ from sqlalchemy_tutorial.base import Session
 from sqlalchemy_tutorial.models.customer import Customer
 from sqlalchemy_tutorial.models.balances import Balance
 from sqlalchemy_tutorial.models.transactions import Transaction
-from sqlalchemy import case
+from sqlalchemy import case, distinct
 from sqlalchemy import func
 
 # 2. Extract a session
@@ -24,8 +24,6 @@ for trans in all_trans:
 
 for bal in all_bal:
     pass
-
-# 4. Simple Joins
 
 # If we don't have Foreign Keys in tables
 # .all() gets list of values. Without .all() it is generator
@@ -58,6 +56,10 @@ group_ex = session.query(Transaction.customer_id_to.label("customer_id_to"),
     Transaction.customer_id_to)
 group_ex_all = group_ex.all()
 df = pd.read_sql(group_ex.statement, session.bind)
+
+# group by -> count(distinct())
+count_dist_ex = session.query(Transaction.customer_id_to, func.count(distinct(Transaction.customer_id_from))).group_by(Transaction.customer_id_to).all()
+
 
 # 4.2 Order by + if-else
 

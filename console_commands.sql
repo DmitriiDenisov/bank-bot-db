@@ -8,7 +8,7 @@ ALTER TABLE balances ADD CONSTRAINT fk_balances FOREIGN KEY (customer_id) REFERE
 insert into customers (first_name, second_name, nickname_telegram, join_date) VALUES ('Dmitry', 'Denisov', 'ssf', '2020-01-06')
 insert into balances (customer_id, usd_bal, eur_bal, aed_bal) values (118, 0, 1030, 0)
 insert into transactions (customer_id_from, customer_id_to, usd_amt, eur_amt, aed_amt) VALUES (10, 6, 0, 3, 0)
-insert into transactions (customer_id_from, customer_id_to, usd_amt, eur_amt, aed_amt) VALUES (6, 5, 0, 0.1, 0)
+insert into transactions (customer_id_from, customer_id_to, usd_amt, eur_amt, aed_amt) VALUES (11, 5, 0, 0.1, 0)
 
 delete from customers;
 delete from balances;
