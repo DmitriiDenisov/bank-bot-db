@@ -150,11 +150,14 @@ psql DBNAME USERNAME
 # Add constraint to existing column not null: 
 alter table customers alter column nickname_telegram set not NULL
 
-# Remove constraint 
+# Remove constraint:
 alter table table_name alter column column_name drop not null;
 
-# Add constraint to existing column unique values
+# Add constraint to existing column unique values:
 alter table balances add constraint unique_cust_id UNIQUE (customer_id);
+
+# Change type of column:
+ALTER TABLE a ALTER COLUMN t TYPE TIMESTAMP WITH TIME ZONE USING t AT TIME ZONE 'UTC'
 ```
 
 
