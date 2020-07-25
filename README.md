@@ -144,7 +144,7 @@ from pg_indexes
 where tablename not like 'pg%';
 ```
 
-Setails: [link](https://postgrespro.com/docs/postgresql/9.6/sql-createindex)
+Details: [link](https://postgrespro.com/docs/postgresql/9.6/sql-createindex)
 
 ### 1.4 Useful tips:
 ```
