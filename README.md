@@ -175,6 +175,9 @@ alter table balances add constraint unique_cust_id UNIQUE (customer_id);
 
 # Change type of column:
 ALTER TABLE a ALTER COLUMN t TYPE TIMESTAMP WITH TIME ZONE USING t AT TIME ZONE 'UTC'
+
+# Drop column:
+ALTER TABLE table_name DROP COLUMN column_name;
 ```
 
 
