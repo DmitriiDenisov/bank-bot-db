@@ -141,7 +141,8 @@ Get all indexes:
 ```
 select *
 from pg_indexes
-where tablename not like 'pg%';
+where tablename not like 'pg%'
+order by tablename
 ```
 
 Details: [link](https://postgrespro.com/docs/postgresql/9.6/sql-createindex)
