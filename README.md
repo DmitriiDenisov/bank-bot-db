@@ -128,9 +128,25 @@ WHERE constraint_type = 'FOREIGN KEY';
 
 _Soruce: [link](https://stackoverflow.com/questions/1152260/postgres-sql-to-list-table-foreign-keys)_
 
+### 1.3 Indexes 
 
+```
+# Create index:
+CREATE INDEX idx_name ON customers (id);
+# Remove index:
+DROP INDEX idx_name;
+```
 
-### 1.3 Useful tips:
+Get all indexes:
+```
+select *
+from pg_indexes
+where tablename not like 'pg%';
+```
+
+Setails: [link](https://postgrespro.com/docs/postgresql/9.6/sql-createindex)
+
+### 1.4 Useful tips:
 ```
 # To connect to Database fith username:
 psql DBNAME USERNAME
