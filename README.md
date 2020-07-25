@@ -73,7 +73,7 @@ CREATE TABLE playground (
 
 **Why do we need Foreign Key?**
 
-When you use foreign keys you get: Data integrity and faster queries. Consider you remove an users, then you would end up with a lot of comments linked to an invalid user if you forget to remove the comments manually with a separate query. With foreign keys you could set it to remove all the comments automatically as you remove an user (or update changes, like if you would change the user id). 
+When you use foreign keys you get: Data integrity and faster queries. Consider you remove a user, then you would end up with a lot of comments linked to an invalid user if you forget to remove the comments manually with a separate query. With foreign keys you could set it to remove all the comments automatically as you remove a user (or update changes, like if you would change the user id). 
 Also you won't be able to add new row to Table if it does not have corresponding row in main table (for example, you won't be able to add new row to Balance while you don't have corresponding Customer)
 Once you try to delete from main table you will observe error like ERROR:  
 `update or delete on table "customers" violates foreign key constraint "fk_balances" on table "balances" DETAIL:  Key (id)=(1) is still referenced from table "balances".):`
