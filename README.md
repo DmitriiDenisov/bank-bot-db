@@ -52,6 +52,9 @@ INSERT INTO products (product_no, name, price) VALUES
     (2, 'Bread', 1.99),
     (3, 'Milk', 2.99);
   
+# Add column with default value
+ALTER TABLE customers ADD COLUMN access_type int NOT NULL DEFAULT 0;
+  
 # Try Select:
 SELECT * FROM users;
 ```
