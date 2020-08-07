@@ -46,6 +46,15 @@ CREATE TABLE "anotherTable" ("someValue" VARCHAR(64));
 INSERT INTO users (login, password)
   VALUES ('afiskon', '123456');
   
+# Insert multiple rows in one time:
+INSERT INTO products (product_no, name, price) VALUES
+    (1, 'Cheese', 9.99),
+    (2, 'Bread', 1.99),
+    (3, 'Milk', 2.99);
+  
+# Add column with default value
+ALTER TABLE customers ADD COLUMN access_type int NOT NULL DEFAULT 0;
+  
 # Try Select:
 SELECT * FROM users;
 ```
@@ -73,7 +82,7 @@ CREATE TABLE playground (
 
 **Why do we need Foreign Key?**
 
-When you use foreign keys you get: Data integrity and faster queries. Consider you remove an users, then you would end up with a lot of comments linked to an invalid user if you forget to remove the comments manually with a separate query. With foreign keys you could set it to remove all the comments automatically as you remove an user (or update changes, like if you would change the user id). 
+When you use foreign keys you get: Data integrity and faster queries. Consider you remove a user, then you would end up with a lot of comments linked to an invalid user if you forget to remove the comments manually with a separate query. With foreign keys you could set it to remove all the comments automatically as you remove a user (or update changes, like if you would change the user id). 
 Also you won't be able to add new row to Table if it does not have corresponding row in main table (for example, you won't be able to add new row to Balance while you don't have corresponding Customer)
 Once you try to delete from main table you will observe error like ERROR:  
 `update or delete on table "customers" violates foreign key constraint "fk_balances" on table "balances" DETAIL:  Key (id)=(1) is still referenced from table "balances".):`
@@ -128,9 +137,26 @@ WHERE constraint_type = 'FOREIGN KEY';
 
 _Soruce: [link](https://stackoverflow.com/questions/1152260/postgres-sql-to-list-table-foreign-keys)_
 
+### 1.3 Indexes 
 
+```
+# Create index:
+CREATE INDEX idx_name ON customers (id);
+# Remove index:
+DROP INDEX idx_name;
+```
 
-### 1.3 Useful tips:
+Get all indexes:
+```
+select *
+from pg_indexes
+where tablename not like 'pg%'
+order by tablename
+```
+
+Details: [link](https://postgrespro.com/docs/postgresql/9.6/sql-createindex)
+
+### 1.4 Useful tips:
 ```
 # To connect to Database fith username:
 psql DBNAME USERNAME
@@ -150,11 +176,17 @@ psql DBNAME USERNAME
 # Add constraint to existing column not null: 
 alter table customers alter column nickname_telegram set not NULL
 
-# Remove constraint 
+# Remove constraint:
 alter table table_name alter column column_name drop not null;
 
-# Add constraint to existing column unique values
+# Add constraint to existing column unique values:
 alter table balances add constraint unique_cust_id UNIQUE (customer_id);
+
+# Change type of column:
+ALTER TABLE a ALTER COLUMN t TYPE TIMESTAMP WITH TIME ZONE USING t AT TIME ZONE 'UTC'
+
+# Drop column:
+ALTER TABLE table_name DROP COLUMN column_name;
 ```
 
 
