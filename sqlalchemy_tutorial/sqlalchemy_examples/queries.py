@@ -58,6 +58,7 @@ group_ex = session.query(Transaction.customer_id_to.label("customer_id_to"),
                          func.sum(Transaction.usd_amt).label("sum_usd"), func.sum(Transaction.eur_amt).label("sum_eur"),
                          func.max(Transaction.usd_amt).label("max_usd")).group_by(
     Transaction.customer_id_to)
+# session.query(Customer).g
 group_ex_all = group_ex.all()
 df = pd.read_sql(group_ex.statement, session.bind)
 
