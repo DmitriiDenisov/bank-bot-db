@@ -46,6 +46,12 @@ CREATE TABLE "anotherTable" ("someValue" VARCHAR(64));
 INSERT INTO users (login, password)
   VALUES ('afiskon', '123456');
   
+# Insert multiple rows in one time:
+INSERT INTO products (product_no, name, price) VALUES
+    (1, 'Cheese', 9.99),
+    (2, 'Bread', 1.99),
+    (3, 'Milk', 2.99);
+  
 # Try Select:
 SELECT * FROM users;
 ```
