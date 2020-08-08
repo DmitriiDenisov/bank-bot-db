@@ -187,6 +187,9 @@ ALTER TABLE a ALTER COLUMN t TYPE TIMESTAMP WITH TIME ZONE USING t AT TIME ZONE 
 
 # Drop column:
 ALTER TABLE table_name DROP COLUMN column_name;
+
+# Rename column:
+ALTER TABLE table_name RENAME COLUMN column_name TO new_column_name;
 ```
 
 
