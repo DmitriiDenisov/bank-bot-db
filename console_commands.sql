@@ -17,7 +17,7 @@ delete from transactions;
 
 delete from tokens where customer_id =47;
 delete from balances where customer_id=28;
-delete from customers where id=27;
+delete from customers where id=56;
 
 select * from transactions;
 
@@ -54,4 +54,4 @@ order by tablename
 
 INSERT INTO access_types (access_type_int, access_type_str) VALUES (0, 'user'), (1, 'admin')
 
-update customers set access_type=1 where id=33
+update balances set usd_amt=1234 where customer_id=42;

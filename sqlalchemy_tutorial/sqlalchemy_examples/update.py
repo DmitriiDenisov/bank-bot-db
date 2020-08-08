@@ -12,7 +12,7 @@ Base.metadata.create_all(engine)
 session = Session()
 
 session.query(Balance).filter(Balance.customer_id == 28).update(
-    {"aed_bal": (Balance.aed_bal + 1), "eur_bal": (Balance.eur_bal + 2)})
+    {"aed_bal": (Balance.aed_amt + 1), "eur_bal": (Balance.eur_amt + 2)})
 # session.commit()
 
 
