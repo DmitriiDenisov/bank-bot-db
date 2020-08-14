@@ -50,8 +50,8 @@ INSERT into customers (first_name, second_name, nickname_telegram, join_date) VA
 select *
 from pg_indexes
 where tablename not like 'pg%'
-order by tablename
+order by tablename;
 
 INSERT INTO access_types (access_type_int, access_type_str) VALUES (0, 'user'), (1, 'admin')
 
-update balances set usd_amt=1234 where customer_id=42;
+update balances set usd_amt=100 where customer_id=33;
