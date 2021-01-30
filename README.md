@@ -246,8 +246,11 @@ host    all             all              ::/0                            md5
 
 2. Restore DB from Dump: 
 `sudo -u postgres psql`
+
 `CREATE DATABASE test_database;`
+
 Exit from interactive psql mode (ctrl+D)
+
 `psql <DB name> < <file with dump>`, example `psql bank_bot_db_copy < ~/bank_bot_db.dump`  
 
 ## 6. Sources: 
