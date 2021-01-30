@@ -248,7 +248,7 @@ host    all             all              ::/0                            md5
 
 `sudo -u postgres psql`
 
-`CREATE DATABASE test_database;`
+`CREATE DATABASE bank_bot_db_copy;`
 
 Exit from interactive psql mode (ctrl+D)
 
