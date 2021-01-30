@@ -240,21 +240,23 @@ host    all             all              ::/0                            md5
 
 4. Majority of comments are in `queries.py` about Foreign Keys, relationships etc. Relationship means that python object will have separate field which is connected to value from another table. For example, object Customer will have separate field Balance which will be taken from Balance table, meanwhile it won't increase time consumption because it is lazy operation ([proof](https://stackoverflow.com/questions/53987267/sqlalchemy-disable-lazy-loading-and-load-object-only-on-join))
 
-## Dump of DataBase:
+## 5. Save Dump DataBase:
 
-1. Save dump: `pg_dump <parameters> <DB name> > <file where to store dump>`, example `pg_dump bank_bot_db > ~/bank_bot_db.dump`. You can find file `bank_bot_db.dump` in this repo. [Source](https://www.dmosk.ru/miniinstruktions.php?mini=postgresql-dump)
+Save dump: `pg_dump <parameters> <DB name> > <file where to store dump>`, example `pg_dump bank_bot_db > ~/bank_bot_db.dump`. You can find file `bank_bot_db.dump` in this repo. [Source](https://www.dmosk.ru/miniinstruktions.php?mini=postgresql-dump)
 
-2. Restore DB from Dump: 
+## 6. Restore DataBase from Dump:
 
-`sudo -u postgres psql`
+1. `sudo -u postgres psql`
 
-`CREATE DATABASE bank_bot_db_copy;`
+2. `CREATE DATABASE bank_bot_db_copy;`
 
-Exit from interactive psql mode (ctrl+D)
+3. `GRANT ALL ON DATABASE bank_bot_db_copy TO dmitryhse;` in order to give access to DB to your user
 
-`psql <DB name> < <file with dump>`, example `psql bank_bot_db_copy < ~/bank_bot_db.dump`  
+4. Exit from interactive psql mode (ctrl+D)
 
-## 6. Sources: 
+5. `psql <DB name> < <file with dump>`, example `psql bank_bot_db_copy < ~/bank_bot_db.dump`  
+
+## 7. Sources: 
 
 [1] Create DB: https://eax.me/postgresql-install/
 
