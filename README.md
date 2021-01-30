@@ -245,6 +245,7 @@ host    all             all              ::/0                            md5
 1. Save dump: `pg_dump <parameters> <DB name> > <file where to store dump>`, example `pg_dump bank_bot_db > ~/bank_bot_db.dump`. You can find file `bank_bot_db.dump` in this repo. [Source](https://www.dmosk.ru/miniinstruktions.php?mini=postgresql-dump)
 
 2. Restore DB from Dump: 
+
 `sudo -u postgres psql`
 
 `CREATE DATABASE test_database;`
