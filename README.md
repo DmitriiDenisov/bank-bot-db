@@ -156,7 +156,31 @@ order by tablename
 
 Details: [link](https://postgrespro.com/docs/postgresql/9.6/sql-createindex)
 
-### 1.4 Useful tips:
+### 1.4 Constraints
+
+Add constraint:
+```
+# Add constraints for a column:
+ALTER TABLE transactions add constraint trans_aed_gt_0 check (aed_amt >= 0);
+ALTER TABLE transactions add constraint trans_usd_gt_0 check (usd_amt >= 0);
+ALTER TABLE transactions add constraint trans_eur_gt_0 check (eur_amt >= 0);
+```
+
+View of all constraints:
+
+```
+SELECT con.*
+       FROM pg_catalog.pg_constraint con
+            INNER JOIN pg_catalog.pg_class rel
+                       ON rel.oid = con.conrelid
+            INNER JOIN pg_catalog.pg_namespace nsp
+                       ON nsp.oid = connamespace
+       WHERE nsp.nspname = 'public'
+             AND rel.relname = 'transactions';
+ ```
+
+
+### 1.5 Useful tips:
 ```
 # To connect to Database fith username:
 psql DBNAME USERNAME
