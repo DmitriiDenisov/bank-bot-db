@@ -18,6 +18,7 @@ delete from transactions;
 delete from tokens where customer_id =47;
 delete from balances where customer_id=28;
 delete from customers where id=56;
+delete from transactions where aed_amt=-1;
 
 select * from transactions;
 
@@ -26,8 +27,7 @@ ALTER TABLE transactions ADD CONSTRAINT fk_transactions_to FOREIGN KEY (customer
 ALTER TABLE transactions ADD CONSTRAINT fk_transactions_from FOREIGN KEY (customer_id_from) REFERENCES customers (id) on delete set null ;
 
 
-select * from foreign_keys_view;
-
+-- Create View for all constraints
 CREATE VIEW foreign_keys_view AS
 SELECT
     tc.table_name, kcu.column_name,
@@ -41,12 +41,15 @@ FROM
     JOIN information_schema.constraint_column_usage
         AS ccu ON ccu.constraint_name = tc.constraint_name
 WHERE constraint_type = 'FOREIGN KEY';
+-- See view of constraints
+select * from foreign_keys_view;
+
 
 SELECT * FROM foreign_keys_view;
 
 INSERT into customers (first_name, second_name, nickname_telegram, join_date) VALUES ('Ilya', 'Tek', '@teck', '2020-01-01')
 
-
+-- Get all indices
 select *
 from pg_indexes
 where tablename not like 'pg%'
@@ -54,4 +57,18 @@ order by tablename;
 
 INSERT INTO access_types (access_type_int, access_type_str) VALUES (0, 'user'), (1, 'admin')
 
-update balances set usd_amt=100 where customer_id=33;
+update balances set eur_amt=100 where customer_id=33;
+
+alter table transactions add constraint trans_aed_gt_0 check (aed_amt >= 0);
+alter table transactions add constraint trans_usd_gt_0 check (usd_amt >= 0);
+alter table transactions add constraint trans_eur_gt_0 check (eur_amt >= 0);
+
+-- Get all constraints (such as some column is greater than 0 and so on)
+SELECT con.*
+       FROM pg_catalog.pg_constraint con
+            INNER JOIN pg_catalog.pg_class rel
+                       ON rel.oid = con.conrelid
+            INNER JOIN pg_catalog.pg_namespace nsp
+                       ON nsp.oid = connamespace
+       WHERE nsp.nspname = 'public'
+             AND rel.relname = 'transactions';
