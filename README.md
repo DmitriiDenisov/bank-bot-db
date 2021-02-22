@@ -156,7 +156,31 @@ order by tablename
 
 Details: [link](https://postgrespro.com/docs/postgresql/9.6/sql-createindex)
 
-### 1.4 Useful tips:
+### 1.4 Constraints
+
+Add constraint:
+```
+# Add constraints for a column:
+ALTER TABLE transactions add constraint trans_aed_gt_0 check (aed_amt >= 0);
+ALTER TABLE transactions add constraint trans_usd_gt_0 check (usd_amt >= 0);
+ALTER TABLE transactions add constraint trans_eur_gt_0 check (eur_amt >= 0);
+```
+
+View of all constraints:
+
+```
+SELECT con.*
+       FROM pg_catalog.pg_constraint con
+            INNER JOIN pg_catalog.pg_class rel
+                       ON rel.oid = con.conrelid
+            INNER JOIN pg_catalog.pg_namespace nsp
+                       ON nsp.oid = connamespace
+       WHERE nsp.nspname = 'public'
+             AND rel.relname = 'transactions';
+ ```
+
+
+### 1.5 Useful tips:
 ```
 # To connect to Database fith username:
 psql DBNAME USERNAME
@@ -190,6 +214,9 @@ ALTER TABLE table_name DROP COLUMN column_name;
 
 # Rename column:
 ALTER TABLE table_name RENAME COLUMN column_name TO new_column_name;
+
+# Delete DataBase:
+DROP DATABASE [IF EXISTS] database_name;
 ```
 
 
@@ -240,7 +267,23 @@ host    all             all              ::/0                            md5
 
 4. Majority of comments are in `queries.py` about Foreign Keys, relationships etc. Relationship means that python object will have separate field which is connected to value from another table. For example, object Customer will have separate field Balance which will be taken from Balance table, meanwhile it won't increase time consumption because it is lazy operation ([proof](https://stackoverflow.com/questions/53987267/sqlalchemy-disable-lazy-loading-and-load-object-only-on-join))
 
-## 5. Sources: 
+## 5. Save Dump DataBase:
+
+Save dump: `pg_dump <parameters> <DB name> > <file where to store dump>`, example `pg_dump bank_bot_db > ~/bank_bot_db.dump`. You can find file `bank_bot_db.dump` in this repo. [Source](https://www.dmosk.ru/miniinstruktions.php?mini=postgresql-dump)
+
+## 6. Restore DataBase from Dump:
+
+1. `sudo -u postgres psql`
+
+2. `CREATE DATABASE bank_bot_db_copy;`
+
+3. `GRANT ALL ON DATABASE bank_bot_db_copy TO dmitryhse;` in order to give access to DB to your user
+
+4. Exit from interactive psql mode (ctrl+D)
+
+5. `psql <DB name> < <file with dump>`, example `psql bank_bot_db_copy < ~/bank_bot_db.dump`  
+
+## 7. Sources: 
 
 [1] Create DB: https://eax.me/postgresql-install/
 

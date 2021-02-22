@@ -1,0 +1,743 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.15 (Ubuntu 10.15-0ubuntu0.18.04.1)
+-- Dumped by pg_dump version 10.15 (Ubuntu 10.15-0ubuntu0.18.04.1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: access_types; Type: TABLE; Schema: public; Owner: dmitryhse
+--
+
+CREATE TABLE public.access_types (
+    access_type_int integer NOT NULL,
+    access_type_str text NOT NULL
+);
+
+
+ALTER TABLE public.access_types OWNER TO dmitryhse;
+
+--
+-- Name: balances; Type: TABLE; Schema: public; Owner: dmitryhse
+--
+
+CREATE TABLE public.balances (
+    id integer NOT NULL,
+    customer_id integer NOT NULL,
+    usd_amt real,
+    eur_amt real,
+    aed_amt real
+);
+
+
+ALTER TABLE public.balances OWNER TO dmitryhse;
+
+--
+-- Name: balances_id_seq; Type: SEQUENCE; Schema: public; Owner: dmitryhse
+--
+
+CREATE SEQUENCE public.balances_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.balances_id_seq OWNER TO dmitryhse;
+
+--
+-- Name: balances_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmitryhse
+--
+
+ALTER SEQUENCE public.balances_id_seq OWNED BY public.balances.id;
+
+
+--
+-- Name: customers; Type: TABLE; Schema: public; Owner: dmitryhse
+--
+
+CREATE TABLE public.customers (
+    id integer NOT NULL,
+    first_name character varying(50),
+    second_name character varying(50),
+    nickname_telegram character varying(50) NOT NULL,
+    join_date timestamp without time zone,
+    access_type integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.customers OWNER TO dmitryhse;
+
+--
+-- Name: customers_id_seq; Type: SEQUENCE; Schema: public; Owner: dmitryhse
+--
+
+CREATE SEQUENCE public.customers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.customers_id_seq OWNER TO dmitryhse;
+
+--
+-- Name: customers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmitryhse
+--
+
+ALTER SEQUENCE public.customers_id_seq OWNED BY public.customers.id;
+
+
+--
+-- Name: foreign_keys_view; Type: VIEW; Schema: public; Owner: dmitryhse
+--
+
+CREATE VIEW public.foreign_keys_view AS
+ SELECT tc.table_name,
+    kcu.column_name,
+    ccu.table_name AS foreign_table_name,
+    ccu.column_name AS foreign_column_name,
+    tc.constraint_name
+   FROM ((information_schema.table_constraints tc
+     JOIN information_schema.key_column_usage kcu ON (((tc.constraint_name)::text = (kcu.constraint_name)::text)))
+     JOIN information_schema.constraint_column_usage ccu ON (((ccu.constraint_name)::text = (tc.constraint_name)::text)))
+  WHERE ((tc.constraint_type)::text = 'FOREIGN KEY'::text);
+
+
+ALTER TABLE public.foreign_keys_view OWNER TO dmitryhse;
+
+--
+-- Name: passwords; Type: TABLE; Schema: public; Owner: dmitryhse
+--
+
+CREATE TABLE public.passwords (
+    id integer NOT NULL,
+    customer_id integer,
+    user_email character varying(50) NOT NULL,
+    user_pass text NOT NULL
+);
+
+
+ALTER TABLE public.passwords OWNER TO dmitryhse;
+
+--
+-- Name: passwords_id_seq; Type: SEQUENCE; Schema: public; Owner: dmitryhse
+--
+
+CREATE SEQUENCE public.passwords_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.passwords_id_seq OWNER TO dmitryhse;
+
+--
+-- Name: passwords_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmitryhse
+--
+
+ALTER SEQUENCE public.passwords_id_seq OWNED BY public.passwords.id;
+
+
+--
+-- Name: tokens; Type: TABLE; Schema: public; Owner: dmitryhse
+--
+
+CREATE TABLE public.tokens (
+    id integer NOT NULL,
+    customer_id integer NOT NULL,
+    token_uuid text NOT NULL,
+    creation_date timestamp without time zone,
+    exp_date timestamp without time zone
+);
+
+
+ALTER TABLE public.tokens OWNER TO dmitryhse;
+
+--
+-- Name: tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: dmitryhse
+--
+
+CREATE SEQUENCE public.tokens_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tokens_id_seq OWNER TO dmitryhse;
+
+--
+-- Name: tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmitryhse
+--
+
+ALTER SEQUENCE public.tokens_id_seq OWNED BY public.tokens.id;
+
+
+--
+-- Name: transactions; Type: TABLE; Schema: public; Owner: dmitryhse
+--
+
+CREATE TABLE public.transactions (
+    id integer NOT NULL,
+    customer_id_from integer,
+    customer_id_to integer,
+    usd_amt real,
+    eur_amt real,
+    aed_amt real
+);
+
+
+ALTER TABLE public.transactions OWNER TO dmitryhse;
+
+--
+-- Name: transactions_id_seq; Type: SEQUENCE; Schema: public; Owner: dmitryhse
+--
+
+CREATE SEQUENCE public.transactions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.transactions_id_seq OWNER TO dmitryhse;
+
+--
+-- Name: transactions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dmitryhse
+--
+
+ALTER SEQUENCE public.transactions_id_seq OWNED BY public.transactions.id;
+
+
+--
+-- Name: balances id; Type: DEFAULT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.balances ALTER COLUMN id SET DEFAULT nextval('public.balances_id_seq'::regclass);
+
+
+--
+-- Name: customers id; Type: DEFAULT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.customers ALTER COLUMN id SET DEFAULT nextval('public.customers_id_seq'::regclass);
+
+
+--
+-- Name: passwords id; Type: DEFAULT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.passwords ALTER COLUMN id SET DEFAULT nextval('public.passwords_id_seq'::regclass);
+
+
+--
+-- Name: tokens id; Type: DEFAULT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.tokens ALTER COLUMN id SET DEFAULT nextval('public.tokens_id_seq'::regclass);
+
+
+--
+-- Name: transactions id; Type: DEFAULT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.transactions ALTER COLUMN id SET DEFAULT nextval('public.transactions_id_seq'::regclass);
+
+
+--
+-- Data for Name: access_types; Type: TABLE DATA; Schema: public; Owner: dmitryhse
+--
+
+COPY public.access_types (access_type_int, access_type_str) FROM stdin;
+0	user
+1	admin
+\.
+
+
+--
+-- Data for Name: balances; Type: TABLE DATA; Schema: public; Owner: dmitryhse
+--
+
+COPY public.balances (id, customer_id, usd_amt, eur_amt, aed_amt) FROM stdin;
+11	5	1.69999993	10	5
+47	42	100.399994	3	20.5
+28	9	631.899475	3	1
+33	28	6	8.5	0
+34	29	1	0	11
+38	33	84	108.159973	107.339996
+35	30	0	0	0
+39	34	0	0	0
+40	35	0	0	0
+41	36	0	0	0
+42	37	0	0	0
+43	38	0	0	0
+44	39	0	0	0
+46	41	0	0	0
+48	43	0	0	0
+49	44	0	0	0
+14	7	0	0	0
+\.
+
+
+--
+-- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: dmitryhse
+--
+
+COPY public.customers (id, first_name, second_name, nickname_telegram, join_date, access_type) FROM stdin;
+5	Ivan	Petrov	asd	2020-01-06 00:00:00	0
+7	Dmitry	Denisov	ssf	2020-01-06 00:00:00	0
+9	Sql	Alchemy	@sql	2002-10-11 00:00:00	0
+28	Postamn	postmanov	@post	2020-10-11 00:00:00	0
+29	Postamn	postmanov	@post	2020-10-11 00:00:00	0
+30	post_param	post_paramov	123	2020-06-06 00:00:00	0
+34	New_user	flask	@test	2020-07-19 00:00:00	0
+35	New_user	flask	@test	2020-07-19 00:00:00	0
+36	New_user	flask	@test	2020-07-19 00:00:00	0
+37	Vladimir	Ivanov	@ivan	2020-07-24 00:00:00	0
+38	Vladimir	Ivanov	@ivan	2020-07-24 00:00:00	0
+39	New_user	flask	@test	2020-07-19 00:00:00	0
+41	New_user	flask	@test	2020-07-19 00:00:00	0
+42	New_user	flask	@test	2020-07-19 00:00:00	0
+43	New_user	flask	@test	2020-07-19 00:00:00	0
+44	New_user	flask	@test	2020-07-25 00:00:00	0
+33	New_user	flask	@test	2020-07-19 00:00:00	1
+\.
+
+
+--
+-- Data for Name: passwords; Type: TABLE DATA; Schema: public; Owner: dmitryhse
+--
+
+COPY public.passwords (id, customer_id, user_email, user_pass) FROM stdin;
+2	34	asdsd@mail.ru	$2a$12$.Zf0zrUEnY60ehRLttdZw..KUlF.Z3eYAMAGfp1.sZ7m9SWur4Y0i
+3	35	efwer@mail.ru	$2a$12$2Wtjy06PUlfKEO1JuUczVO1s3dNkP9hX2EDg2TucTeCyBr/t232eG
+4	36	efwer@e.ru	$2a$12$VhDszH7K.1aZsVn9bYSxqOLSwPjNLGPr1SoNTCrWv.cwz74kWANa2
+5	39	ef33wer@e.ru	$2a$12$.8tNN1qPYDsPTUjHgp7an.EsbsYuzoifAMj5bmIqBjiP4aHXmtQKq
+7	41	effds33wer@e.ru	$2a$12$Z2Ng5B0XNEuexl.qsP6aNOvAns1icSv7sWG6zMO6qfdXdNqzPngOi
+9	43	xswe3@bk.ru	$2a$12$5fJtT0u.7pJHO1jmXSN4q.k1QVgP5pIPCuN/QVP/F4KkR8zhMTzSK
+10	44	x1swe3@bk.ru	$2a$12$mx6mFEaoY6qYQfyfVxgREutpRT9AGU9nnUozV5DKHXhOE24Z8g9WG
+8	42	xsw3@bk.ru	$2a$12$rariq/V76G9zXrdrQy/qNuPDOVNfULvoEkoUFMM8O5pQNKzbi5Atm
+1	33	dmitryhse@gmail.com	$2a$12$81DJUbHWvaaYbdHgNX65J.wYYmtRSJ877CCP0HUeiHnT0yurC60lC
+\.
+
+
+--
+-- Data for Name: tokens; Type: TABLE DATA; Schema: public; Owner: dmitryhse
+--
+
+COPY public.tokens (id, customer_id, token_uuid, creation_date, exp_date) FROM stdin;
+1	33	530c3a1b015846bdba49d59bd0ec60d4	2020-07-25 00:00:00	2020-07-25 00:00:00
+2	33	10f20d5450ba492b9b4b4b32ae5b6034	2020-07-25 00:00:00	2020-07-25 00:00:00
+3	33	76b105a6a72940279f7aec6eb4c06e7e	2020-07-25 13:57:09.224877	2020-07-25 14:27:09.224884
+4	42	9b8558eb9e4e464089402f5c0325f605	2020-07-25 14:08:27.619543	2020-07-25 14:38:27.61957
+5	43	826aa0c2584f42cf8046ae506899e811	2020-07-25 14:09:58.372615	2020-07-25 14:39:58.37262
+6	44	c6ef7f88059940fb904c34b84bafe61f	2020-07-25 14:10:45.498431	2020-07-25 14:40:45.498439
+10	33	07e7187748d543f4a99b6c620e255dec	2020-07-25 16:22:12.893829	2020-07-25 16:52:12.893833
+11	33	6e5bf8b22206457098bb84c71dc59f3d	2020-07-25 17:05:21.094783	2020-07-25 17:35:21.094792
+12	33	fa30a62b14dd4e229012e0b5b649588a	2020-07-25 19:18:43.926739	2020-07-25 19:48:43.926744
+13	33	23e4091be7c74bb08602f3757007a3c6	2020-07-25 19:28:35.840439	2020-07-25 19:58:35.840444
+14	33	2c4569c0df8349849e9d4ce506708219	2020-07-25 21:16:46.872163	2020-07-25 21:46:46.87217
+16	33	0961e054443f4b7bb2d3bf0a2765aaa4	2020-07-26 20:09:09.680524	2020-07-26 20:39:09.680527
+17	33	844070619f7646149ee7e51b91400a68	2020-07-28 18:07:18.021352	2020-07-28 18:37:18.021356
+18	33	304178f7f6d445e1bf37eef7c3e2f02c	2020-07-29 20:29:38.500526	2020-07-29 20:59:38.500531
+19	33	527dd6c14a024af588f0af4bf480016e	2020-07-29 20:46:33.658804	2020-07-29 21:16:33.658815
+20	33	d64b7337c33b46bca062b00b80e36a57	2020-07-29 21:29:42.918722	2020-07-29 21:59:42.91873
+21	33	8b9f44a1e79e42789121842a0b8c4ad4	2020-07-29 21:30:11.471364	2020-07-29 22:00:11.471375
+22	33	cd7c28f9d30f4ff795545b65399549af	2020-07-30 09:31:27.401842	2020-07-30 10:01:27.401861
+23	33	91f969a6c2314cc587694c23460b6dc0	2020-07-30 09:44:44.673188	2020-07-30 10:14:44.673193
+24	33	7e41f7a230de43cf9f44a646efa60f4a	2020-08-01 09:40:16.314401	2020-08-01 10:10:16.314405
+27	33	cf9b444cd72a46ec8cbb0ff51b90008f	2020-08-01 11:36:37.112152	2020-08-01 12:06:37.112158
+28	33	8941c931f8454083ae9df1282587e84c	2020-08-01 12:03:17.486912	2020-08-01 12:33:17.486917
+29	33	7dbb9fe1f74443c5817dd387fc58041e	2020-08-01 12:09:01.443136	2020-08-01 12:39:01.443139
+30	33	2e69182b22c148569195424c22f519c4	2020-08-01 12:09:28.624975	2020-08-01 12:39:28.62498
+31	33	d30a478aa1004ad9853317c2f8821e9c	2020-08-01 12:10:06.300358	2020-08-01 12:40:06.300364
+32	33	c191d4a95d074776a3a7f6f40219587f	2020-08-01 14:31:02.983538	2020-08-01 15:01:02.983558
+33	33	f0af1cde2843492f976739ec87ba8fb5	2020-08-01 14:37:23.318672	2020-08-01 15:07:23.318679
+34	33	bae24d4faabd456bb3d8d5fa17bd23e1	2020-08-01 14:38:35.964988	2020-08-01 15:08:35.964994
+35	33	a28504555811485db54ae35a16bc1497	2020-08-01 14:49:40.80393	2020-08-01 15:19:40.803936
+36	33	b6b0e1de12c74f4daeff5625521d154d	2020-08-01 15:07:23.394719	2020-08-01 15:37:23.394724
+37	33	3bbaab2d12284c46920ac8d725db366c	2020-08-01 15:08:05.835255	2020-08-01 15:38:05.835262
+38	33	b4ed34fd661f4a91ada4df737d9d78f3	2020-08-01 15:34:05.355165	2020-08-01 16:04:05.355172
+39	33	6df0dab6cf954a6fadac39a90c752be4	2020-08-01 15:36:11.126435	2020-08-01 16:06:11.126442
+40	33	a00e42906547434a8e579582dc1a3f38	2020-08-01 15:48:25.726668	2020-08-01 16:18:25.726675
+41	33	ea27f3e97b914139b7c629b2ec0c52a1	2020-08-01 16:01:42.344692	2020-08-01 16:31:42.344698
+42	33	c0135ac2e04244f79ff7b12e5a2280ba	2020-08-01 16:03:15.83149	2020-08-01 16:33:15.831493
+43	33	8cf764245ed84072b33d1e3e012b9ce8	2020-08-01 16:03:35.574511	2020-08-01 16:33:35.574515
+44	33	ef581ece4198408c94ff704d5e4d0f81	2020-08-07 09:39:41.592283	2020-08-07 10:09:41.592293
+45	33	f1d6bb57511d4fe48984518bbfc8cbcd	2020-08-07 09:43:16.041371	2020-08-07 10:13:16.041377
+46	33	07eafdab06a940b899bc7bb6db4a987e	2020-08-07 09:43:29.904838	2020-08-07 10:13:29.904845
+47	33	1e7edd6b336a41948fc68d8219abb323	2020-08-07 09:45:09.829849	2020-08-07 10:15:09.829853
+49	33	4c86eed383074745a94fa179df722f2d	2020-08-07 19:49:37.97181	2020-08-07 20:19:37.971813
+50	33	b06044157d6948ac9f20dadb53256de3	2020-08-07 20:18:11.501303	2020-08-07 20:48:11.501309
+51	33	b7092a5d67ae47b1bdf3a6fa80b81bf1	2020-08-07 20:49:34.059075	2020-08-07 21:19:34.059104
+52	42	c2ba6f95ba74477481114ae4c6f3241e	2020-08-07 20:53:19.380458	2020-08-07 21:23:19.380462
+53	42	7568f94c4bda46eea23c0ffcd8e0fb43	2020-08-07 20:53:43.095412	2020-08-07 21:23:43.095418
+54	42	d1bea7eed97440df9148393ac5cd4f4b	2020-08-07 21:31:53.168049	2020-08-07 22:01:53.168055
+55	42	31342cb19028436ba8265f6babcff958	2020-08-07 22:08:10.011199	2020-08-10 22:08:10.011205
+56	33	d4a4c1a329f242b2a26ee1fbfb31187d	2020-08-10 17:14:09.88534	2020-08-13 17:14:09.885347
+57	33	05447315c913437983ef555adb8811fd	2020-08-22 14:54:58.990143	2020-08-25 14:54:58.99015
+58	33	8c15e02704e5453d9d954f0a591f399a	2020-08-27 18:04:56.7734	2020-08-30 18:04:56.773406
+59	33	e10259d736f14318a85d18c00d023b06	2021-01-24 18:06:49.52027	2021-01-27 18:06:49.520277
+60	33	5d83f75c33d0413eb4d2f70d92aa385c	2021-01-24 18:07:46.645114	2021-01-27 18:07:46.64512
+\.
+
+
+--
+-- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: dmitryhse
+--
+
+COPY public.transactions (id, customer_id_from, customer_id_to, usd_amt, eur_amt, aed_amt) FROM stdin;
+9	5	\N	0	3	0
+10	\N	5	0	0.100000001	0
+14	5	7	12	30	56
+15	5	7	0	1	3
+16	7	5	0	1	3
+17	7	5	0	10	30
+18	7	5	12	1	0
+19	9	\N	3	0	0
+22	\N	\N	3	0	0
+24	5	9	27	0	0
+26	33	5	0	0.100000001	0
+29	33	5	10	0	0
+30	5	33	0	0	150
+31	5	33	0	13	0
+25	\N	5	0	0.100000001	0
+28	33	\N	101	0	0
+32	\N	33	10	0	0
+35	42	5	100	0	0
+36	42	5	100	0	0
+37	42	7	100	0	0
+38	42	7	100	0	0
+39	42	9	100	0	0
+40	42	9	100	0	0
+41	42	9	100	0	0
+42	42	9	100	0	0
+43	42	9	100	0	0
+44	42	9	1	0	0
+45	42	9	1	0	0
+46	42	9	100	0	0
+47	42	9	200	0	0
+48	42	9	200	0	0
+49	42	9	1	0	0
+50	42	9	1	0	0
+51	42	9	1	0	0
+52	42	9	1	0	0
+53	42	9	1	0	0
+54	42	9	1	0	0
+55	42	9	1	0	0
+56	42	9	1	0	0
+57	42	9	1	0	0
+58	42	9	1	0	0
+59	42	9	1	0	0
+60	42	9	1	0	0
+61	42	9	1	0	0
+62	42	9	1	0	0
+63	42	9	1	0	0
+64	42	9	1	0	0
+65	42	9	1	0	0
+66	42	9	1	0	0
+67	42	9	1	0	0
+68	42	9	1	0	0
+69	42	9	1	0	0
+70	42	9	1	0	0
+71	42	9	1	0	0
+72	42	9	1.29999995	0	0
+77	42	5	1.29999995	0	0
+78	42	5	0.400000006	0	0
+79	42	28	100	0	0
+80	42	28	140	0	0
+81	42	28	1	0	0
+82	42	28	1	0	0
+83	42	28	1	0	0
+84	42	28	1	0	0
+85	42	28	1	0	0
+86	42	28	1	0	0
+87	42	28	1	0	0
+88	42	28	1	0	0
+89	42	28	1	0	0
+90	42	28	1	0	0
+91	42	28	1	0	0
+92	42	28	1	0	0
+93	42	28	1	0	0
+94	42	28	1	0	0
+95	42	28	1	0	0
+96	42	28	1	0	0
+97	42	28	1	0	0
+98	42	28	1	0	0
+99	42	28	1	0	0
+100	42	28	1	0	0
+101	42	28	1	0	0
+102	42	28	1	0	0
+103	42	28	1	0	0
+104	42	28	1	0	0
+105	42	28	1	0	0
+106	42	28	1	0	0
+107	33	28	0	1	0
+108	33	28	0	2	0
+109	33	28	0	2	0
+110	33	28	0	3	0
+111	33	28	0	3	0
+112	33	28	0	3	0
+113	33	28	0	3	0
+114	33	28	0	3	0
+115	33	28	0	3	0
+116	33	28	0	3	0
+117	33	28	0	1	0
+118	33	28	0	1	0
+119	33	28	0	0.5	0
+120	33	29	1	0	0
+121	33	29	0	0	11
+122	33	42	0	0	11
+123	33	42	0	0	1
+124	33	42	0	0	1
+125	33	42	0	0	1
+126	33	42	0	0	1
+127	33	42	0	0	1
+128	33	42	0	0	1
+129	33	42	0	0	1
+130	33	42	0	0	1
+131	33	42	0	0	0.5
+132	33	42	0	0	0.5
+133	33	42	0	0	0.5
+134	33	42	0	1	0
+135	33	42	0	1	0
+136	33	42	0	1	0
+137	33	42	0.100000001	0	0
+138	33	42	0.100000001	0	0
+139	33	42	0.100000001	0	0
+140	33	42	0.100000001	0	0
+141	33	9	1	0	0
+142	33	9	0.100000001	0	0
+143	33	9	0.200000003	0	0
+144	33	9	0.300000012	0	0
+145	33	9	0.100000001	0	0
+146	33	9	0.100000001	0	0
+147	33	9	0.100000001	0	0
+148	33	9	0.100000001	0	0
+149	33	9	0.100000001	0	0
+150	33	9	0.100000001	0	0
+151	33	9	0.100000001	0	0
+152	33	9	0.100000001	0	0
+153	33	9	0.100000001	0	0
+154	33	9	0.100000001	0	0
+155	33	9	0.100000001	0	0
+156	33	9	0.100000001	0	0
+157	33	9	0.100000001	0	0
+158	33	9	0.100000001	0	0
+159	33	9	0.100000001	0	0
+160	33	9	0.100000001	0	0
+161	33	9	0.100000001	0	0
+162	33	9	0.100000001	0	0
+163	33	9	0.100000001	0	0
+164	33	9	0.100000001	0	0
+165	33	9	1	0	0
+166	33	9	1	0	0
+167	33	9	1	0	0
+168	33	9	0	1	0
+\.
+
+
+--
+-- Name: balances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmitryhse
+--
+
+SELECT pg_catalog.setval('public.balances_id_seq', 62, true);
+
+
+--
+-- Name: customers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmitryhse
+--
+
+SELECT pg_catalog.setval('public.customers_id_seq', 57, true);
+
+
+--
+-- Name: passwords_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmitryhse
+--
+
+SELECT pg_catalog.setval('public.passwords_id_seq', 17, true);
+
+
+--
+-- Name: tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmitryhse
+--
+
+SELECT pg_catalog.setval('public.tokens_id_seq', 60, true);
+
+
+--
+-- Name: transactions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dmitryhse
+--
+
+SELECT pg_catalog.setval('public.transactions_id_seq', 168, true);
+
+
+--
+-- Name: access_types access_types_pkey; Type: CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.access_types
+    ADD CONSTRAINT access_types_pkey PRIMARY KEY (access_type_int);
+
+
+--
+-- Name: balances balances_pkey; Type: CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.balances
+    ADD CONSTRAINT balances_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customers customers_pkey; Type: CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.customers
+    ADD CONSTRAINT customers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: passwords passwords_pkey; Type: CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.passwords
+    ADD CONSTRAINT passwords_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tokens tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.tokens
+    ADD CONSTRAINT tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: transactions transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.transactions
+    ADD CONSTRAINT transactions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: balances unique_cust_id; Type: CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.balances
+    ADD CONSTRAINT unique_cust_id UNIQUE (customer_id);
+
+
+--
+-- Name: cust_id_idx; Type: INDEX; Schema: public; Owner: dmitryhse
+--
+
+CREATE INDEX cust_id_idx ON public.passwords USING btree (customer_id);
+
+
+--
+-- Name: cust_id_tokens_idx; Type: INDEX; Schema: public; Owner: dmitryhse
+--
+
+CREATE INDEX cust_id_tokens_idx ON public.tokens USING btree (customer_id);
+
+
+--
+-- Name: cust_id_trans_from_idx; Type: INDEX; Schema: public; Owner: dmitryhse
+--
+
+CREATE INDEX cust_id_trans_from_idx ON public.transactions USING btree (customer_id_from);
+
+
+--
+-- Name: cust_id_trans_to_idx; Type: INDEX; Schema: public; Owner: dmitryhse
+--
+
+CREATE INDEX cust_id_trans_to_idx ON public.transactions USING btree (customer_id_to);
+
+
+--
+-- Name: balances fk_balances; Type: FK CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.balances
+    ADD CONSTRAINT fk_balances FOREIGN KEY (customer_id) REFERENCES public.customers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: passwords fk_passwords; Type: FK CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.passwords
+    ADD CONSTRAINT fk_passwords FOREIGN KEY (customer_id) REFERENCES public.customers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: tokens fk_tokens; Type: FK CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.tokens
+    ADD CONSTRAINT fk_tokens FOREIGN KEY (customer_id) REFERENCES public.customers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: transactions fk_transactions_from; Type: FK CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.transactions
+    ADD CONSTRAINT fk_transactions_from FOREIGN KEY (customer_id_from) REFERENCES public.customers(id) ON DELETE SET NULL;
+
+
+--
+-- Name: transactions fk_transactions_to; Type: FK CONSTRAINT; Schema: public; Owner: dmitryhse
+--
+
+ALTER TABLE ONLY public.transactions
+    ADD CONSTRAINT fk_transactions_to FOREIGN KEY (customer_id_to) REFERENCES public.customers(id) ON DELETE SET NULL;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
