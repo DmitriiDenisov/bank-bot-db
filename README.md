@@ -245,7 +245,17 @@ host    all             all              ::/0                            md5
   <img src="https://i.ibb.co/Ph7vCsJ/Screen-Shot-2020-07-03-at-12-48-07-PM.png" width="350" alt="accessibility text">
 </p>
 
-## 3. Connect from Python (in assumption that system is MacOs)
+## 3. Edit/create tables form PyCharm:
+
+<p align="center">
+  <img src="https://i.ibb.co/r4wmncd/Screen-Shot-2021-02-27-at-1-40-32-PM.png" width="350" alt="accessibility text">
+</p>
+
+<p align="center">
+  <img src="https://i.ibb.co/mJ8k17L/Screen-Shot-2021-02-27-at-1-38-24-PM.png" width="350" alt="accessibility text">
+</p>
+
+## 4. Connect from Python (in assumption that system is MacOs)
 
 1. `brew install postgresql`
 
@@ -257,7 +267,7 @@ host    all             all              ::/0                            md5
 
 5. Check with psycopg2 that you have access to DB: `connect_db_psycopg2.py`
 
-## 4. Connect with SQLAlchemy in Python:
+## 5. Connect with SQLAlchemy in Python:
 
 1. `pip install SQLAlchemy`
 
@@ -267,11 +277,11 @@ host    all             all              ::/0                            md5
 
 4. Majority of comments are in `queries.py` about Foreign Keys, relationships etc. Relationship means that python object will have separate field which is connected to value from another table. For example, object Customer will have separate field Balance which will be taken from Balance table, meanwhile it won't increase time consumption because it is lazy operation ([proof](https://stackoverflow.com/questions/53987267/sqlalchemy-disable-lazy-loading-and-load-object-only-on-join))
 
-## 5. Save Dump DataBase:
+## 6. Save Dump DataBase:
 
 Save dump: `pg_dump <parameters> <DB name> > <file where to store dump>`, example `pg_dump bank_bot_db > ~/bank_bot_db.dump`. You can find file `bank_bot_db.dump` in this repo. [Source](https://www.dmosk.ru/miniinstruktions.php?mini=postgresql-dump)
 
-## 6. Restore DataBase from Dump:
+## 7. Restore DataBase from Dump:
 
 1. `sudo -u postgres psql`
 
@@ -283,7 +293,7 @@ Save dump: `pg_dump <parameters> <DB name> > <file where to store dump>`, exampl
 
 5. `psql <DB name> < <file with dump>`, example `psql bank_bot_db_copy < ~/bank_bot_db.dump`  
 
-## 7. Sources: 
+## 8. Sources: 
 
 [1] Create DB: https://eax.me/postgresql-install/
 
