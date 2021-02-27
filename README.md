@@ -248,11 +248,11 @@ host    all             all              ::/0                            md5
 ## 3. Edit/create tables form PyCharm:
 
 <p align="center">
-  <img src="https://i.ibb.co/r4wmncd/Screen-Shot-2021-02-27-at-1-40-32-PM.png" width="200" alt="accessibility text">
+  <img src="https://i.ibb.co/r4wmncd/Screen-Shot-2021-02-27-at-1-40-32-PM.png" width="150" alt="accessibility text">
 </p>
 
 <p align="center">
-  <img src="https://i.ibb.co/mJ8k17L/Screen-Shot-2021-02-27-at-1-38-24-PM.png" width="450" alt="accessibility text">
+  <img src="https://i.ibb.co/mJ8k17L/Screen-Shot-2021-02-27-at-1-38-24-PM.png" width="550" alt="accessibility text">
 </p>
 
 ## 4. Connect from Python (in assumption that system is MacOs)
